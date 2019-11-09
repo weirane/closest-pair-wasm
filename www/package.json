@@ -1,0 +1,30 @@
+{
+  "name": "closest-pair-wasm",
+  "version": "0.1.0",
+  "description": "Find the closest dot pair on a 2-D plane",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --config webpack.config.js",
+    "start": "webpack-dev-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/weirane/closest-pair-wasm.git"
+  },
+  "keywords": [
+    "webassembly",
+    "wasm",
+    "rust",
+    "webpack"
+  ],
+  "author": "Wang Ruochen <wangkevin920@163.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/weirane/closest-pair-wasm",
+  "devDependencies": {
+    "closest-pair-wasm": "file:../pkg",
+    "webpack": "^4.29.3",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.5",
+    "copy-webpack-plugin": "^5.0.0"
+  }
+}

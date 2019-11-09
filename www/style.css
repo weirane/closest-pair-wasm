@@ -1,0 +1,20 @@
+canvas {
+    border-width: 2px;
+    border-style: solid;
+    border-color: black;
+}
+
+div#outer {
+    width: 760px;
+    height: 400px;
+    margin: 30px auto 0 auto;
+}
+
+div#canvas {
+    float: left;
+}
+
+div#action {
+    float: right;
+    margin: 50px auto auto auto;
+}
