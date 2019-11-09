@@ -5,7 +5,7 @@ mod point;
 
 pub use crate::point::{ParsePointError, Point};
 use std::cmp::Ordering::Equal;
-use std::f64::INFINITY as inf;
+use std::f64::{EPSILON as eps, INFINITY as inf};
 
 /// Calculates the closest pair of a slice of points, returns the closest
 /// distance and the two points.
@@ -29,7 +29,7 @@ fn closest_pair_inner(points: &[Point], points_ysort: &[Point]) -> (f64, Point, 
                 (points[1].distance(&points[2]), points[1], points[2]),
                 (points[0].distance(&points[2]), points[0], points[2]),
             ]
-            .into_iter()
+            .iter()
             .min_by(|a, b| a.0.partial_cmp(&b.0).unwrap_or(Equal))
             .unwrap();
         }
@@ -39,7 +39,7 @@ fn closest_pair_inner(points: &[Point], points_ysort: &[Point]) -> (f64, Point, 
     let (xleft, xright) = (&points[..mid], &points[mid..]);
     let (yleft, yright): (Vec<_>, Vec<_>) = points_ysort
         .iter()
-        .partition(|&p| p.x < mid_line || (p.x == mid_line && xleft.contains(p)));
+        .partition(|&p| p.x < mid_line || ((p.x - mid_line).abs() < eps && xleft.contains(p)));
     let left = closest_pair_inner(&xleft, &yleft);
     let right = closest_pair_inner(&xright, &yright);
     let (mut min_dist, mut min_p0, mut min_p1) = if left.0 < right.0 { left } else { right };
