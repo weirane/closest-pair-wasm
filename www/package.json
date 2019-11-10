@@ -1,7 +1,7 @@
 {
   "name": "closest-pair-wasm",
   "version": "0.1.0",
-  "description": "Find the closest dot pair on a 2-D plane",
+  "description": "Find the closest pair of points on a 2-D plane",
   "main": "index.js",
   "scripts": {
     "build": "webpack --config webpack.config.js",
