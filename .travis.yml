@@ -7,8 +7,9 @@ env:
     - RUST_BACKTRACE=1
 
 before_script:
-    - cargo install wasm-pack
+    - curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh -s -- -f
+    - nvm install 10 && nvm use 10
 script:
-    - cd closest-pair && cargo test
+    - (cd closest-pair && cargo test)
 after_success:
     - ./scripts/travis-deploy.sh
