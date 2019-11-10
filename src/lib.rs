@@ -6,7 +6,9 @@ use wasm_bindgen::prelude::*;
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
 #[wasm_bindgen]
-pub struct ReturnType {
+#[derive(Debug, Default)]
+pub struct WasmApp {
+    points: Vec<Point>,
     pub dist: f64,
     pub p0_x: f64,
     pub p0_y: f64,
@@ -15,18 +17,37 @@ pub struct ReturnType {
 }
 
 #[wasm_bindgen]
-pub fn calculate(xs: &[f64], ys: &[f64]) -> ReturnType {
-    let points: Vec<Point> = xs
-        .iter()
-        .zip(ys.iter())
-        .map(|(&x, &y)| (x, y).into())
-        .collect();
-    let (dist, p0, p1) = closest_pair(&points);
-    ReturnType {
-        dist,
-        p0_x: p0.x,
-        p0_y: p0.y,
-        p1_x: p1.x,
-        p1_y: p1.y,
+impl WasmApp {
+    #[wasm_bindgen(constructor)]
+    pub fn new() -> Self {
+        Default::default()
+    }
+
+    #[wasm_bindgen(js_name = addPoint)]
+    pub fn add_point(&mut self, x: f64, y: f64) {
+        self.points.push((x, y).into());
+    }
+
+    #[wasm_bindgen(js_name = hasPoint)]
+    pub fn has_point(&self) -> bool {
+        !self.points.is_empty()
+    }
+
+    pub fn calculate(&mut self) {
+        let (dist, p0, p1) = closest_pair(&self.points);
+        self.dist = dist;
+        self.p0_x = p0.x;
+        self.p0_y = p0.y;
+        self.p1_x = p1.x;
+        self.p1_y = p1.y;
+    }
+
+    pub fn clear(&mut self) {
+        self.points.clear();
+        self.dist = 0.;
+        self.p0_x = 0.;
+        self.p0_y = 0.;
+        self.p1_x = 0.;
+        self.p1_y = 0.;
     }
 }
