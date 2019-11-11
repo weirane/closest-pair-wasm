@@ -1,12 +1,11 @@
 import {WasmApp} from 'closest-pair-wasm';
 
 const CIRCLE_RADIUS = 5;
-let calculated = false;
+let app = new WasmApp;
 let calc = document.querySelector('#calc');
 let canvas = document.querySelector('canvas');
 let clear = document.querySelector('#clear');
 let distance = document.querySelector('#dist');
-let app = new WasmApp;
 
 function getClickPos(e) {
     let canSty = getComputedStyle(canvas);
@@ -49,34 +48,37 @@ function presentResult(dist, p0_x, p0_y, p1_x, p1_y) {
     console.log(`(${p1_x}, ${p1_y})`);
 }
 
-calc.addEventListener('click', () => {
-    if (!app.hasPoint()) {
-        // No points are given
-        console.log('Empty canvas!');
-        return;
-    }
-    if (calculated) {
-        return;
-    }
-    app.calculate();
-    presentResult(app.dist, app.p0_x, app.p0_y, app.p1_x, app.p1_y);
-    calculated = true;
-});
+function calculationDone() {
+    calc.removeEventListener('click', calcListener);
+    canvas.removeEventListener('click', canvasListener);
+    canvas.style.cursor = 'default';
+}
 
-clear.addEventListener('click', () => {
-    calculated = false;
-    distance.innerHTML = '';
-    app.clear();
-    let ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-});
-
-canvas.addEventListener('click', (e) => {
-    if (calculated) {
-        return;
+function calcListener() {
+    try {
+        app.calculate();
+        presentResult(app.dist, app.p0_x, app.p0_y, app.p1_x, app.p1_y);
+    } catch (e) {
+        distance.innerHTML = `<span style="color:red">${e}</span>`;
+    } finally {
+        calculationDone();
     }
+}
+
+function canvasListener(e) {
     let pos = getClickPos(e);
     let ctx = canvas.getContext('2d');
     drawCircle(ctx, pos.x, pos.y);
     app.addPoint(pos.x, pos.y);
+}
+
+clear.addEventListener('click', () => {
+    calc.addEventListener('click', calcListener);
+    canvas.addEventListener('click', canvasListener);
+    canvas.style.cursor = 'pointer';
+    canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+    distance.innerHTML = '';
+    app.clear();
 });
+
+clear.click();

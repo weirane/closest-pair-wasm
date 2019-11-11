@@ -33,13 +33,20 @@ impl WasmApp {
         !self.points.is_empty()
     }
 
-    pub fn calculate(&mut self) {
-        let (dist, p0, p1) = closest_pair(&self.points);
-        self.dist = dist;
-        self.p0_x = p0.x;
-        self.p0_y = p0.y;
-        self.p1_x = p1.x;
-        self.p1_y = p1.y;
+    pub fn calculate(&mut self) -> Result<(), JsValue> {
+        match self.points.len() {
+            0 => Err(JsValue::from_str("No point given")),
+            1 => Err(JsValue::from_str("Only one point")),
+            _ => {
+                let (dist, p0, p1) = closest_pair(&self.points);
+                self.dist = dist;
+                self.p0_x = p0.x;
+                self.p0_y = p0.y;
+                self.p1_x = p1.x;
+                self.p1_y = p1.y;
+                Ok(())
+            }
+        }
     }
 
     pub fn clear(&mut self) {
