@@ -99,7 +99,7 @@ mod tests {
         b: &mut test::Bencher,
         result: Option<(f64, Point, Point)>,
     ) -> Result<(), Box<dyn Error>> {
-        let points: Vec<Point> = BufReader::new(File::open(file)?)
+        let points: Vec<_> = BufReader::new(File::open(file)?)
             .lines()
             .map(|li| Ok(Point::from_str(&li?)?))
             .collect::<Result<_, Box<dyn Error>>>()?;
