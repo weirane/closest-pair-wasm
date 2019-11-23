@@ -1,16 +1,15 @@
-use closest_pair::{closest_pair, Point};
-use std::error::Error;
+use closest_pair::{closest_pair, ParsePointError, Point};
 use std::io::{self, BufRead};
 use std::str::FromStr;
 
-fn main() -> Result<(), Box<dyn Error>> {
+fn main() -> Result<(), ParsePointError> {
     let points: Vec<_> = io::stdin()
         .lock()
         .lines()
         .map(|line| line.unwrap())
         .take_while(|line| !line.is_empty())
         .map(|line| Ok(Point::from_str(&line)?))
-        .collect::<Result<_, Box<dyn Error>>>()?;
+        .collect::<Result<_, ParsePointError>>()?;
 
     let (dist, p0, p1) = closest_pair(&points);
 
