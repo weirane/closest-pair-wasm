@@ -23,3 +23,8 @@ Go to `./www` and run
     npm run build
 
 You should get the whole web application in the directory `dist`. Copy the files inside `dist` to your server. Make sure your server is configured so that it serves `.wasm` files with the correct MIME type `application/wasm`.
+
+## TODO
+- [ ] Add a grid to the canvas.
+- [ ] Add a footer.
+- [ ] Generalize the `closest_pair` function.
