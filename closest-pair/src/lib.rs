@@ -7,18 +7,40 @@ pub use crate::point::{ParsePointError, Point};
 use std::cmp::Ordering::Equal;
 use std::f64::{EPSILON as eps, INFINITY as inf};
 
-/// Calculates the closest pair of a slice of points, returns the closest
+/// Trait for the points.
+pub trait TwoDim {
+    /// The first coordinate.
+    fn x(&self) -> f64;
+
+    /// The second coordinate.
+    fn y(&self) -> f64;
+
+    /// The euclidean distance.
+    fn distance(&self, other: &Self) -> f64 {
+        let xd = self.x() - other.x();
+        let yd = self.y() - other.y();
+        (xd * xd + yd * yd).sqrt()
+    }
+}
+
+/// Calculates the closest pair in a slice of points, returns the closest
 /// distance and the two points.
-pub fn closest_pair(points: &[Point]) -> (f64, Point, Point) {
+pub fn closest_pair<T>(points: &[T]) -> (f64, T, T)
+where
+    T: TwoDim + PartialEq + Copy,
+{
     let mut points = points.to_vec();
     let mut points_ysort = points.clone();
-    points.sort_by(|a, b| a.x.partial_cmp(&b.x).unwrap_or(Equal));
-    points_ysort.sort_by(|a, b| a.y.partial_cmp(&b.y).unwrap_or(Equal));
+    points.sort_by(|a, b| a.x().partial_cmp(&b.x()).unwrap_or(Equal));
+    points_ysort.sort_by(|a, b| a.y().partial_cmp(&b.y()).unwrap_or(Equal));
 
     closest_pair_inner(&points, &points_ysort)
 }
 
-fn closest_pair_inner(points: &[Point], points_ysort: &[Point]) -> (f64, Point, Point) {
+fn closest_pair_inner<T>(points: &[T], points_ysort: &[T]) -> (f64, T, T)
+where
+    T: TwoDim + PartialEq + Copy,
+{
     let mid = match points.len() {
         0 => unreachable!("Empty slice"),
         1 => return (inf, points[0], points[0]),
@@ -35,18 +57,18 @@ fn closest_pair_inner(points: &[Point], points_ysort: &[Point]) -> (f64, Point, 
         }
         n => n / 2,
     };
-    let mid_line = points[mid].x;
+    let mid_line = points[mid].x();
     let (xleft, xright) = (&points[..mid], &points[mid..]);
     let (yleft, yright): (Vec<_>, Vec<_>) = points_ysort
         .iter()
-        .partition(|&p| p.x < mid_line || ((p.x - mid_line).abs() < eps && xleft.contains(p)));
+        .partition(|&p| p.x() < mid_line || ((p.x() - mid_line).abs() < eps && xleft.contains(&p)));
     let left = closest_pair_inner(&xleft, &yleft);
     let right = closest_pair_inner(&xright, &yright);
     let (mut min_dist, mut min_p0, mut min_p1) = if left.0 < right.0 { left } else { right };
 
     let points_ysort: Vec<_> = points_ysort
         .iter()
-        .filter(|p| (p.x - mid_line).abs() <= min_dist)
+        .filter(|p| (p.x() - mid_line).abs() <= min_dist)
         .collect();
 
     for (i, &p0) in points_ysort.iter().enumerate() {
@@ -74,7 +96,7 @@ mod tests {
     #[test]
     #[should_panic]
     fn cp_trivial() {
-        closest_pair(&[]);
+        closest_pair::<Point>(&[]);
     }
 
     #[test]

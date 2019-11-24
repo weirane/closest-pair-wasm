@@ -10,25 +10,24 @@ pub struct Point {
     pub y: f64,
 }
 
+impl crate::TwoDim for Point {
+    fn x(&self) -> f64 {
+        self.x
+    }
+
+    fn y(&self) -> f64 {
+        self.y
+    }
+}
+
 impl Point {
     /// Provide two coordinates on the Cartesian coordinate system to form a
     /// point. Inputs can be integers or floating point numbers.
-    pub fn new<T, U>(x: T, y: U) -> Self
-    where
-        T: Into<f64>,
-        U: Into<f64>,
-    {
+    pub fn new(x: impl Into<f64>, y: impl Into<f64>) -> Self {
         Point {
             x: x.into(),
             y: y.into(),
         }
-    }
-
-    /// The distance to `other`.
-    pub fn distance(&self, other: &Point) -> f64 {
-        let xd = self.x - other.x;
-        let yd = self.y - other.y;
-        ((xd * xd) + (yd * yd)).sqrt()
     }
 }
 
