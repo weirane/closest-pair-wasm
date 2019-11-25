@@ -23,6 +23,20 @@ pub trait TwoDim {
     }
 }
 
+impl<T, U> TwoDim for (T, U)
+where
+    T: Copy + Into<f64>,
+    U: Copy + Into<f64>,
+{
+    fn x(&self) -> f64 {
+        self.0.into()
+    }
+
+    fn y(&self) -> f64 {
+        self.1.into()
+    }
+}
+
 /// Calculates the closest pair in a slice of points, returns the closest
 /// distance and the two points.
 pub fn closest_pair<T>(points: &[T]) -> (f64, T, T)
