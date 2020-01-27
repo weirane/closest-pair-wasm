@@ -9,17 +9,27 @@
   <noscript>This page contains webassembly and javascript content, please enable javascript in your browser.</noscript>
 
   <h1>Rust + WebAssembly demo of the closest pair problem</h1>
-  <div id="outer">
-    <div id="canvas">
-      <canvas width="600px" height="400px"></canvas>
-    </div>
+  <div id="wrapper">
+    <div id="outer">
+      <div id="canvas">
+        <canvas width="600px" height="400px"></canvas>
+        <div id="footer">
+          <p>Click on the canvas to mark at least <br /> two points then click Calculate</p>
+          <p>
+          Made by <a href="https://github.com/weirane" target="_blank">@weirane</a>
+          ·
+          <a href="https://github.com/weirane/closest-pair-wasm" target="_blank">GitHub Repo</a>
+          </p>
+        </div>
+      </div>
 
-    <div id="action">
-      <button id="calc">Calculate</button>
-      <button id="clear">Clear</button>
-      <p>
-      <span id="dist"></span>
-      </p>
+      <div id="action">
+        <button id="calc">Calculate</button>
+        <button id="clear">Clear</button>
+        <p>
+        <span id="dist"></span>
+        </p>
+      </div>
     </div>
   </div>
 

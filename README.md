@@ -26,5 +26,5 @@ You should get the whole web application in the directory `dist`. Copy the files
 
 ## TODO
 - [ ] Add a grid to the canvas.
-- [ ] Add a footer.
+- [x] Add a footer.
 - [x] Generalize the `closest_pair` function.
