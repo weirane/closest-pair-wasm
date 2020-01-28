@@ -25,6 +25,6 @@ Go to `./www` and run
 You should get the whole web application in the directory `dist`. Copy the files inside `dist` to your server. Make sure your server is configured so that it serves `.wasm` files with the correct MIME type `application/wasm`.
 
 ## TODO
-- [ ] Add a grid to the canvas.
+- [x] Add a grid to the canvas.
 - [x] Add a footer.
 - [x] Generalize the `closest_pair` function.

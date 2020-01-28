@@ -28,9 +28,7 @@ function presentResult(dist, p0_x, p0_y, p1_x, p1_y) {
 
     // Highlight the points red and draw a line between them
     let ctx = canvas.getContext('2d');
-    let origFillStyle = ctx.fillStyle;
-    let origStrokeStyle = ctx.strokeStyle;
-    let origLineWidth = ctx.lineWidth;
+    ctx.save();
     ctx.fillStyle = '#ff0000';
     ctx.strokeStyle = '#ff0000';
     drawCircle(ctx, p0_x, p0_y);
@@ -40,9 +38,7 @@ function presentResult(dist, p0_x, p0_y, p1_x, p1_y) {
     ctx.lineTo(p1_x, p1_y);
     ctx.lineWidth = 2;
     ctx.stroke();
-    ctx.fillStyle = origFillStyle;
-    ctx.strokeStyle = origStrokeStyle;
-    ctx.lineWidth = origLineWidth;
+    ctx.restore();
 
     console.log(`(${p0_x}, ${p0_y})`);
     console.log(`(${p1_x}, ${p1_y})`);
@@ -72,11 +68,31 @@ function canvasListener(e) {
     app.addPoint(pos.x, pos.y);
 }
 
+function drawGrid() {
+    let ctx = canvas.getContext('2d');
+    let w = canvas.width;
+    let h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+    ctx.beginPath();
+    for (let i = 0; i < w; i += 20) {
+        ctx.moveTo(i, 0);
+        ctx.lineTo(i, h);
+    }
+    for (let i = 0; i < h; i += 20) {
+        ctx.moveTo(0, i);
+        ctx.lineTo(w, i);
+    }
+    ctx.save();
+    ctx.strokeStyle = '#ccc';
+    ctx.stroke();
+    ctx.restore();
+}
+
 clear.addEventListener('click', () => {
     calc.addEventListener('click', calcListener);
     canvas.addEventListener('click', canvasListener);
     canvas.style.cursor = 'pointer';
-    canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+    drawGrid();
     distance.innerHTML = '';
     app.clear();
 });
