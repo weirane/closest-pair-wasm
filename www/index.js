@@ -24,7 +24,7 @@ function drawCircle(ctx, x, y) {
 }
 
 function presentResult(dist, p0_x, p0_y, p1_x, p1_y) {
-    distance.innerHTML = 'Distance: ' + app.dist.toFixed(3);
+    distance.innerHTML = 'Distance: ' + dist.toFixed(3);
 
     // Highlight the points red and draw a line between them
     let ctx = canvas.getContext('2d');
