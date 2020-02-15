@@ -1,5 +1,6 @@
 # closest-pair-wasm
 [![Build Status](https://travis-ci.org/weirane/closest-pair-wasm.svg?branch=master)](https://travis-ci.org/weirane/closest-pair-wasm)
+[![dependency status](https://deps.rs/repo/github/weirane/closest-pair-wasm/status.svg)](https://deps.rs/repo/github/weirane/closest-pair-wasm)
 
 🦀 Rust + 🕸 Wasm = ❤
 
